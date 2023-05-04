@@ -9,6 +9,7 @@ import quora from './quora'
 import stackoverflow from './stackoverflow'
 import juejin from './juejin'
 import weixin from './weixin'
+import gerrit from './gerrit'
 
 /**
  * @typedef {object} SiteConfigAction
@@ -184,5 +185,14 @@ export const config = {
     sidebarContainerQuery: [],
     appendContainerQuery: [],
     resultsContainerQuery: ['#js_content'],
+  },
+  'gerrit.ai.cmri': {
+    inputQuery: gerrit.inputQuery,
+    sidebarContainerQuery: ['#commitAndRelated > div.commitContainer'],
+    appendContainerQuery: [],
+    resultsContainerQuery: ['#js_content'],
+    shadowRootMode: true,
+    appendOnBody: true,
+    targetQuery: ['#commitAndRelated > div.commitContainer'],
   },
 }

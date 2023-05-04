@@ -41,23 +41,64 @@ function DecisionCard(props) {
 
     if (!siteConfig) return
 
+    if (siteConfig.appendOnBody) {
+      const targetElement = getPossibleElementByQuerySelector(
+        siteConfig.targetQuery,
+        siteConfig.shadowRootMode,
+      )
+      // 使用 getBoundingClientRect() 方法获取目标元素的边界矩形信息
+      var rect = targetElement.getBoundingClientRect()
+
+      // 获取滚动条的偏移量
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft
+
+      // 获取目标元素的坐标位置（相对于文档）
+      var x = rect.left + scrollLeft
+      var y = rect.top + scrollTop
+
+      const width = Math.floor(rect.width)
+      const height = Math.floor(rect.height)
+
+      console.log('height', height)
+
+      // 设置元素的定位为 fixed
+      container.style.position = 'fixed'
+
+      // 设置元素的位置
+      container.style.top = `${y}px` // 设置距离顶部的距离
+      container.style.left = `${x + width + 20}px` // 设置距离左侧的距离
+      container.style.width = `${width}px`
+      container.style.height = `${height}px`
+      container.style.overflow = 'auto'
+      document.body.append(container)
+      return
+    }
+
     if (config.insertAtTop) {
       const resultsContainerQuery = getPossibleElementByQuerySelector(
         siteConfig.resultsContainerQuery,
       )
       if (resultsContainerQuery) resultsContainerQuery.prepend(container)
     } else {
-      const sidebarContainer = getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery)
+      const sidebarContainer = getPossibleElementByQuerySelector(
+        siteConfig.sidebarContainerQuery,
+        siteConfig.shadowRootMode,
+      )
       if (sidebarContainer) {
         sidebarContainer.prepend(container)
       } else {
-        const appendContainer = getPossibleElementByQuerySelector(siteConfig.appendContainerQuery)
+        const appendContainer = getPossibleElementByQuerySelector(
+          siteConfig.appendContainerQuery,
+          siteConfig.shadowRootMode,
+        )
         if (appendContainer) {
           container.classList.add('chatgptbox-sidebar-free')
           appendContainer.appendChild(container)
         } else {
           const resultsContainerQuery = getPossibleElementByQuerySelector(
             siteConfig.resultsContainerQuery,
+            siteConfig.shadowRootMode,
           )
           if (resultsContainerQuery) resultsContainerQuery.prepend(container)
         }

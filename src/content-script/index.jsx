@@ -33,9 +33,18 @@ async function mountComponent(siteConfig, userConfig) {
     }
     const e =
       (siteConfig &&
-        (getPossibleElementByQuerySelector(siteConfig.sidebarContainerQuery) ||
-          getPossibleElementByQuerySelector(siteConfig.appendContainerQuery) ||
-          getPossibleElementByQuerySelector(siteConfig.resultsContainerQuery))) ||
+        (getPossibleElementByQuerySelector(
+          siteConfig.sidebarContainerQuery,
+          siteConfig.shadowRootMode,
+        ) ||
+          getPossibleElementByQuerySelector(
+            siteConfig.appendContainerQuery,
+            siteConfig.shadowRootMode,
+          ) ||
+          getPossibleElementByQuerySelector(
+            siteConfig.resultsContainerQuery,
+            siteConfig.shadowRootMode,
+          ))) ||
       getPossibleElementByQuerySelector([userConfig.prependQuery]) ||
       getPossibleElementByQuerySelector([userConfig.appendQuery])
     if (e) {
